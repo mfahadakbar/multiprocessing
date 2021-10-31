@@ -12,7 +12,7 @@ training_data = pd.read_csv("training_data.csv")
 test_data = pd.read_csv("test_data.csv")
 
 # get the unique list of stores
-unique_list_of_stores = training_data["Store"].unique()
+unique_list_of_stores = training_data["outlet"].unique()
 
 
 # get the shared dictionary
@@ -30,15 +30,15 @@ predictions_place_holder.to_csv("predictions_place_holder.csv", index=False)
 # Create the training (target) function
 def training(store):
     # slice the data by store, for training and test data
-    training_df_for_a_store = training_data[training_data["Store"] == store]
-    test_df_for_a_store = test_data[test_data["Store"] == store]
+    training_df_for_a_store = training_data[training_data["outlet"] == store]
+    test_df_for_a_store = test_data[test_data["outlet"] == store]
 
     # prepare for the PyCaret's setup function
     s = setup(
         data=training_df_for_a_store,
-        target="Sales",
+        target="sales_qty",
         fold_strategy="timeseries",
-        ignore_features=["Store"],
+        ignore_features=["outlet"],
         # n_jobs controlls PyCaret's internal multiprocessing
         # we need to set it to one, since we are already using
         # all cores for our own multiprocessing
